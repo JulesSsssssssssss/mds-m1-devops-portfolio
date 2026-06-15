@@ -46,6 +46,10 @@ WORKDIR /app
 # Copy project dependencies from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
 
+# COPY Prisma schema and generate Prisma client
+COPY --from=dependencies /app/prisma ./prisma
+COPY --from=dependencies /app/src/generated ./src/generated
+
 # Copy application source code
 COPY . .
 
