@@ -1,0 +1,56 @@
+// Schéma Prisma du portfolio.
+// Docs : https://pris.ly/d/prisma-schema
+// Le client généré est en sortie dans src/generated/prisma (Prisma 7).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Un projet du portfolio (stocké en base, affiché dans la section Projets).
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  /// Description courte affichée sur la carte.
+  description String
+  /// Contenu long optionnel (Markdown) pour une page de détail.
+  content     String?
+  coverImage  String?
+  tags        String[] @default([])
+  githubUrl   String?
+  demoUrl     String?
+  /// Mis en avant (affiché en premier sur la home).
+  featured    Boolean  @default(false)
+  published   Boolean  @default(true)
+  /// Ordre d'affichage manuel (plus petit = plus haut).
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, featured])
+}
+
+/// Un article de blog (stocké en base, rendu en Markdown).
+model Post {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  /// Résumé affiché dans la liste des articles.
+  excerpt     String
+  /// Corps de l'article au format Markdown.
+  content     String
+  coverImage  String?
+  tags        String[]  @default([])
+  published   Boolean   @default(false)
+  /// Date de publication (null tant que brouillon).
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([published, publishedAt])
+}
