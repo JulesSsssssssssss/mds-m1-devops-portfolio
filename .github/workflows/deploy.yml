@@ -11,6 +11,20 @@ env:
   image_name: ${{ github.repository }}
 
 jobs:
+
+  security:
+    name: 🔒 Security Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+
+      - name: Run Security Checks
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
   build-and-push:
     name: 🛠️ Build and Push Docker Image
     runs-on: ubuntu-latest
@@ -66,5 +80,5 @@ jobs:
             docker compose pull
             docker compose down
             docker compose up -d --remove-orphans
-            docker system prune -a
+            docker system prune -a -f
 
