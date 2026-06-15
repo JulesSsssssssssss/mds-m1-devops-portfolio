@@ -1,28 +1,28 @@
-name: build and deplor portflio Application 
+name: build and deploy portfolio Application
 
-on: 
+on:
   push:
     branches:
       - main
   workflow_dispatch:
 
-  env: 
-    registry: ghcr.io
-    image_name: ${{ github.repository }}
+env:
+  registry: ghcr.io
+  image_name: ${{ github.repository }}
 
-  jobs: 
+jobs:
+  build:
     name: build and push docker image
     runs-on: ubuntu-latest
-    # environment: production
     permissions:
       contents: read
       packages: write
 
-    steps : 
+    steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name : Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 
       - name: Log in to GitHub Container Registry
@@ -43,6 +43,3 @@ on:
           context: .
           push: true
           tags: ${{ env.registry }}/${{ env.IMAGE_REPOSITORY }}:latest
-
-    
-
