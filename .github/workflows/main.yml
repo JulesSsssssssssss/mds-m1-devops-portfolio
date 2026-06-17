@@ -20,10 +20,15 @@ jobs:
     uses: ./.github/workflows/quality.yml
     secrets : inherit
 
+  test:
+    uses: ./.github/workflows/test.yml
+    needs: security
+    secrets : inherit
+
 
   build-and-push:
     uses: ./.github/workflows/build.yml
-    needs: security
+    needs: [security, test]
     permissions:
       contents: read
       packages: write
