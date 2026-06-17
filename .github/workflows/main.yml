@@ -22,7 +22,6 @@ jobs:
 
   test:
     uses: ./.github/workflows/test.yml
-    needs: security
     secrets : inherit
 
 
